@@ -1,16 +1,14 @@
 /**
- * Servidor que procesa el texto enviado por el cliente
+ * Servidor eco que procesa el texto enviado por un solo cliente
+ * mediante sockets TCP
  */
 
-// Librerias necesarias para la conexion TCP
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-// Librerias para flujos I/O
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.io.IOException;
 
 public class Servidor {
 
@@ -54,7 +52,7 @@ public class Servidor {
 
     // Metodo para procesar y mostrar en mayusculas el mensaje del cliente
     private void procesarMensaje(Socket clientSocket) throws IOException {
-        // Construir los flujos de entrada y salida con autoFlush
+        // Construir los flujos de entrada y de salida con autoFlush
         try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
@@ -71,7 +69,7 @@ public class Servidor {
                 System.out.printf("Cliente [%s]: %s%n",clientSocket.getInetAddress(), linea);
 
                 if ("exit".equalsIgnoreCase(linea.trim())) {
-                    out.println("Saliendo.");
+                    out.println("Saliendo...");
                     break;
                 }
                 out.println(linea.toUpperCase());
