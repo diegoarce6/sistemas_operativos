@@ -34,6 +34,8 @@ public class Servidor {
 
         } catch (IOException ex) {
             System.err.println("Error en el servidor: " + ex.getMessage());
+        } finally {
+            activo = false;
         }
     }
 
@@ -57,20 +59,24 @@ public class Servidor {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
             while (true) {
-                System.out.print(" > ");
+
                 String linea = in.readLine();
 
+                
                 if (linea == null) {
+                    System.out.printf("Cliente [%s] desconectado%n", clientSocket.getInetAddress());
                     break;
                 }
+                
+                System.out.printf("Cliente [%s]: %s%n",clientSocket.getInetAddress(), linea);
 
                 if ("exit".equalsIgnoreCase(linea.trim())) {
-                    out.print("Saliendo.");
+                    out.println("Saliendo.");
                     break;
                 }
-                out.print("Servidor: " + linea.toUpperCase());
+                out.println(linea.toUpperCase());
             }
-        }
+        } 
     }
 
     public static void main(String[] args) {
